@@ -47,7 +47,7 @@
             },
             "Microsoft.Azure.Cosmos": {
               "target": "Package",
-              "version": "[*, )"
+              "version": "[3.23.0, )"
             },
             "System.ComponentModel.Annotations": {
               "target": "Package",

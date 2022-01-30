@@ -6132,7 +6132,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "CsvHelper >= 27.2.1",
-      "Microsoft.Azure.Cosmos >= *",
+      "Microsoft.Azure.Cosmos >= 3.23.0",
       "System.ComponentModel.Annotations >= 5.0.0"
     ]
   },
@@ -6183,7 +6183,7 @@
           },
           "Microsoft.Azure.Cosmos": {
             "target": "Package",
-            "version": "[*, )"
+            "version": "[3.23.0, )"
           },
           "System.ComponentModel.Annotations": {
             "target": "Package",

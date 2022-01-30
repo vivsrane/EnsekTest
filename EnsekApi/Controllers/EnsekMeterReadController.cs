@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.Azure.Cosmos.Fluent;
 using Microsoft.Azure.Cosmos;
+using System;
 
 namespace EnsekApi.Controllers
 {
@@ -20,6 +21,13 @@ namespace EnsekApi.Controllers
             _logger = logger;
         }
     
+        [HttpGet]
+        [Route("/meter-reading-uploads")]
+        public string Get()
+        {
+            return "Test";
+        }
+        
 
         [HttpPost]
         [Route("/meter-reading-uploads")]
@@ -28,9 +36,10 @@ namespace EnsekApi.Controllers
             var errorList=new List<string>();
             var meterReadingModel=new MeterReading();
             
+            try{
             var meterReadingData=await meterReadingModel.LoadFromCsvFile(csvFile,errorList);
-
-            var client = new CosmosClientBuilder("")
+            
+            var client = new CosmosClientBuilder("AccountEndpoint=https://vivstestcosmos.documents.azure.com:443/;AccountKey=Am98VqjBsh1PuiwOKxouglWOCWPjbjtCmicsxQtJ5lILqj8SKNMYIHROb07XAikzko16IOPtDJWBydaQ40IExQ==;")
                     .WithSerializerOptions(new CosmosSerializationOptions
                     {
                         PropertyNamingPolicy = CosmosPropertyNamingPolicy.CamelCase
@@ -39,17 +48,22 @@ namespace EnsekApi.Controllers
             
             var cosmosDbService=new CosmosDbServices(client,"testDb","meterReading");
 
-            foreach(var meterReading in meterReadingData.Where(mr=>mr!=null))
+            /*foreach(var meterReading in meterReadingData.Where(mr=>mr!=null))
             {
                 await cosmosDbService.AddItemAsync(meterReading);
             }
+            */
 
             return new MeterReadingUploadResponse(){
                 ErrorMessages=errorList,
                 FailedUploadRecords=meterReadingData.Count(meterReading=>meterReading==null),
                 SuccessfulUploadRecords=meterReadingData.Count(meterReading=>meterReading!=null)
             };
-
+            }catch(Exception ex)
+            {
+                _logger.LogError(ex,ex.Message,null);
+                throw;
+            }
             
         }
 

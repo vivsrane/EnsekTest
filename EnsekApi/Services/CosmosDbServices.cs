@@ -20,7 +20,7 @@ namespace EnsekApi
         
         public async Task AddItemAsync(MeterReading item)
         {
-            await this._container.CreateItemAsync<MeterReading>(item, new PartitionKey(item.Id));
+            await this._container.CreateItemAsync<MeterReading>(item, new PartitionKey(item.AccountId));
         }
 
         public async Task DeleteItemAsync(string id)
